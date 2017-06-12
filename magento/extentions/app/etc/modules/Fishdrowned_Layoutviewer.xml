@@ -1,0 +1,12 @@
+<config>
+    <modules>
+        <Fishdrowned_Layoutviewer>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Fishdrowned_Layoutviewer>
+        <Fishdrowned_Configviewer>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Fishdrowned_Configviewer>
+    </modules>
+</config>
