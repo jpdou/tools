@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="jquery/jquery-3.2.0.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style type="text/css">
+.encoding .url textarea { width: 100%; }
+.encoding .url .buttons .btn { display: block; margin: 0 auto; }
+
+.encoding .base64 textarea { width: 100%; }
+.encoding .base64 .buttons .btn { display: block; margin: 0 auto; }
+
+.encoding .mage textarea { width: 100%; }
+.encoding .mage .buttons .btn { display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+    <div class="encoding container">
+        <div class="url row">
+            <p>URL encode/decode</p>
+            <div class="col-md-5">
+                <textarea title="url decoded" rows="3" cols="40" v-model="url_decoded" ></textarea>
+            </div>
+            <div class="buttons col-md-2">
+                <button type="button" class="btn btn-default encode" name="encode" title="encode" v-on:click="urlencode" >
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+                <button type="button" class="btn btn-default decode" name="decode" title="decode" v-on:click="urldecode">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                </button>
+            </div>
+            <div class="col-md-5">
+                <textarea title="url encoded" rows="3" cols="40" v-model="url_encoded" ></textarea>
+            </div>
+        </div>
+        
+        <div class="base64 row">
+            <p>base64 encode/decode</p>
+            <div class="col-md-5">
+                <textarea title="base64 decoded" rows="3" cols="40" v-model="base64_decoded" ></textarea>
+            </div>
+            <div class="buttons col-md-2">
+                <button type="button" class="btn btn-default encode" title="encode" v-on:click="base64encode" >
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+                <button type="button" class="btn btn-default decode" title="decode" v-on:click="base64decode">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                </button>
+            </div>
+            <div class="col-md-5">
+                <textarea title="base64 encoded" rows="3" cols="40" v-model="base64_encoded" ></textarea>
+            </div>
+        </div>
+        
+        <div class="mage row">
+            <p>Mage_Core_Helper_Abstract urlEncode/urlDecode</p>
+            <div class="col-md-5">
+                <textarea title="Mage_Core_Helper_Abstract decoded" rows="3" cols="40" v-model="mage_decoded" ></textarea>
+            </div>
+            <div class="buttons col-md-2">
+                <button type="button" class="btn btn-default encode" title="encode" v-on:click="mageencode" >
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+                <button type="button" class="btn btn-default decode" title="decode" v-on:click="magedecode">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                </button>
+            </div>
+            <div class="col-md-5">
+                <textarea title="Mage_Core_Helper_Abstract encoded" rows="3" cols="40" v-model="mage_encoded" ></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var encoding_model = new Vue({
+            el: '.encoding',
+            data: {
+                url_decoded: '',
+                url_encoded: '',
+                base64_decoded: '',
+                base64_encoded: '',
+                mage_decoded: '',
+                mage_encoded: ''
+            },
+            methods: {
+                urlencode: function () {
+                    $.post(
+                        'backend/url.php',
+                        {url_decoded: this.url_decoded},
+                        function (data, status, xhr) {
+                            console.log(data);
+                            if (status == 'success') {
+                                encoding_model.url_encoded = data.url_encoded;
+                            } else {
+                                alert('please try again.');
+                            }
+                        },
+                        'json'
+                    )
+                },
+                urldecode: function () {
+                    $.post(
+                        'backend/url.php',
+                        {url_encoded: this.url_encoded},
+                        function (data, status, xhr) {
+                            console.log(data);
+                            if (status == 'success') {
+                                encoding_model.url_decoded = data.url_decoded;
+                            } else {
+                                alert('please try again.');
+                            }
+                        },
+                        'json'
+                    )
+                },
+                base64encode: function () {
+                    $.post(
+                        'backend/base64.php',
+                        {base64_decoded: this.base64_decoded},
+                        function (data, status, xhr) {
+                            console.log(data);
+                            if (status == 'success') {
+                                encoding_model.base64_encoded = data.base64_encoded;
+                            } else {
+                                alert('please try again.');
+                            }
+                        },
+                        'json'
+                    )
+                },
+                base64decode: function () {
+                    $.post(
+                        'backend/base64.php',
+                        {base64_encoded: this.base64_encoded},
+                        function (data, status, xhr) {
+                            console.log(data);
+                            if (status == 'success') {
+                                encoding_model.base64_decoded = data.base64_decoded;
+                            } else {
+                                alert('please try again.');
+                            }
+                        },
+                        'json'
+                    )
+                },
+                mageencode: function () {
+                    $.post(
+                        'backend/mage.php',
+                        {mage_decoded: this.mage_decoded},
+                        function (data, status, xhr) {
+                            console.log(data);
+                            if (status == 'success') {
+                                encoding_model.mage_encoded = data.mage_encoded;
+                            } else {
+                                alert('please try again.');
+                            }
+                        },
+                        'json'
+                    )
+                },
+                magedecode: function () {
+                    $.post(
+                        'backend/mage.php',
+                        {mage_encoded: this.mage_encoded},
+                        function (data, status, xhr) {
+                            console.log(data);
+                            if (status == 'success') {
+                                encoding_model.mage_decoded = data.mage_decoded;
+                            } else {
+                                alert('please try again.');
+                            }
+                        },
+                        'json'
+                    )
+                }
+            }
+        })
+    </script>
+</body>
+</html>
