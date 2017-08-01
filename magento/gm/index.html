@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gm - Generate Magento Modules</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="http://localhost/tools/jquery/jquery-3.2.0.js"></script>
+</head>
+<body>
+
+<div class="main">
+    <form>
+        <input type="text" name="package" title="package" v-model="form.package" />
+        <input type="text" name="module" title="module" v-model="form.module" />
+        <input type="text" name="model" title="model" v-model="form.model" />
+        <div @click="submit">Submit</div>
+    </form>
+
+</div>
+<script>
+    var vm_gm = new Vue({
+        el: '.main',
+        data: {
+            form: {
+                'package': 'Jeulia',
+                'module': '',
+                'model': ''
+            }
+        },
+        methods: {
+            submit: function () {
+                $.post(
+                    'http://localhost/tools/magento/gm/index.php',
+                    this.form,
+                    function (response,status,xhr) {
+                        console.log(response);
+                    },
+                    'json'
+                );
+            }
+        }
+    });
+</script>
+
+
+
+</body>
+</html>

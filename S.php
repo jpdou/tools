@@ -15,14 +15,21 @@ class S
         }else{
             $_message .= $message;
         }
-        $file = 'msg.log';
+        $file = __DIR__. DIRECTORY_SEPARATOR. 'msg.log';
         if ($flag) {
             $_message = "====". (string)$flag. "====\n". $_message;
         }
         file_put_contents($file, $_message."\n", FILE_APPEND);
     }
 
-
+    /**
+     * @param Exception $e
+     */
+    public static function logException($e)
+    {
+        self::log($e->getMessage());
+        self::log($e->getTraceAsString());
+    }
 
     public static function logTrace()
     {
